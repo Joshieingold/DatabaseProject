@@ -8,7 +8,7 @@ def Run():
     while True:
         print("Awaiting next command")
         command = input().strip()
-
+        current_collection = ""
         if command == "quit":
             print("Closing Connection")
             break
@@ -17,6 +17,15 @@ def Run():
             CreateCollection(db, collection_name)
         elif command == "list collections":
             ListConnections(db)
+        elif command == "list commands":
+            ListCommands()
+        elif command == "locate":
+            Location(db, current_collection)
+        elif command.startswith("connect"):
+            new_path = command.replace("connect", "").strip()
+            db = ConnectPath(new_path)
+            if db == False:
+                break
         else:
             print("Unknown command")
 
@@ -47,5 +56,16 @@ def ListConnections(db_path):
             for i in collections:
                 print("-", i)
 
+def ListCommands():
+    print("- quit : Will close program and database connection.")
+    print("- create collection 'x' : Will create a collection inside the database.")
+    print("- list collections : Will print all the collections currently inside the database.")
+    print("- list commands : Will list all available commands")
+    print("- locate : Will tell you what connections you currently have selected")
+    print("- connect 'x': Will connect you to another database")
+
+def Location(db_path, collection):
+    print(f'You are currently connected to: {db_path}')
+    print(f'Your selected collection is: {collection}')
 
 Run()
